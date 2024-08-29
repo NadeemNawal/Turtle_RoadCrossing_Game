@@ -1,42 +1,42 @@
-
 import time
-from turtle import Screen
+from turtle import Turtle, Screen
 from player import Player
 from car_manager import CarManager
 from scoreboard import Scoreboard
 
-
-
 screen = Screen()
-screen.setup(width=600, height=500)
+screen.setup(width=600, height=600)
+screen.bgpic("clipart.png")
 screen.tracer(0)
 
 player = Player()
 car_manager = CarManager()
 scoreboard = Scoreboard()
-
 screen.listen()
-
 screen.onkey(player.go_up, "Up")
 
+game_is_on = True
 
-is_game_on = True
-while is_game_on:
+while game_is_on:
     time.sleep(0.1)
     screen.update()
-
     car_manager.create_car()
-    car_manager.move_car()
+    car_manager.move_cars()
 
     
     for car in car_manager.all_cars:
         if car.distance(player) < 20:
-            is_game_on = False
+            game_is_on = False
             scoreboard.game_over()
 
+    
     if player.is_at_finish_line():
-        is_game_on = False
-        scoreboard.you_win()
+        player.go_to_start()
+        car_manager.level_up()
+        scoreboard.increase_level()
+
+
+
 
 
 
